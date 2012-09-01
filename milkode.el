@@ -40,7 +40,6 @@
 ;; 
 ;; ;; Shortcut setting
 ;; (global-set-key (kbd "C-x C-m") 'milkode:jump)    ; Jump to direct-path
-;; (global-set-key (kbd "C-x C-,") 'milkode:search)  ; Search keyword
 
 ;;; Code:
 
@@ -50,8 +49,19 @@
 
 ;; Notify function
 ;;;###autoload
-(defun milkode:jump (path)
-  (interactive "MPath: ")
+(defun milkode:jump ()
+  (interactive)
+  (let ((at-point (thing-at-point 'filename)))
+    (if (milkode:is-directpath at-point)
+        (milkode:jump-in at-point)
+      (milkode:jump-in (read-string "Input: ")))))
+  
+;;; Private:
+
+(defun milkode:is-directpath (str)
+  (string-match "^/.*:[0-9]+" str))
+
+(defun milkode:jump-in (path)
   (with-output-to-string
     (with-current-buffer
         standard-output
@@ -59,8 +69,6 @@
       (goto-char (point-min))
       (milkode:goto-line (thing-at-point 'filename))
       )))
-  
-;;; Private:
 
 (defun milkode:goto-line (str)
   (let ((list (split-string str ":")))
