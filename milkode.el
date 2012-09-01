@@ -56,16 +56,17 @@
     (with-current-buffer
         standard-output
       (call-process "gmilk" nil t nil path)
-      (goto-char (point-min)) 
-      (message (thing-at-point 'filename))
-      ;; (find-file (thing-at-point 'filename))
+      (goto-char (point-min))
+      (milkode:goto-line (thing-at-point 'filename))
       )))
   
-  ;; ;; (message (shell-command-to-string (concat "gmilk " path)))
-  ;; (call-process (concat "gmilk " path) nil "bar")
-  ;; )
-
 ;;; Private:
+
+(defun milkode:goto-line (str)
+  (let ((list (split-string str ":")))
+    (find-file (nth 0 list))
+    (goto-line (string-to-number (nth 1 list)))
+  ))
 
 (provide 'milkode)
 ;;; milkode.el ends here
