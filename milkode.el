@@ -52,8 +52,18 @@
 ;;;###autoload
 (defun milkode:jump (path)
   (interactive "MPath: ")
-  (message (shell-command-to-string (concat "gmilk " path)))
-  )
+  (with-output-to-string
+    (with-current-buffer
+        standard-output
+      (call-process "gmilk" nil t nil path)
+      (goto-char (point-min)) 
+      (message (thing-at-point 'filename))
+      ;; (find-file (thing-at-point 'filename))
+      )))
+  
+  ;; ;; (message (shell-command-to-string (concat "gmilk " path)))
+  ;; (call-process (concat "gmilk " path) nil "bar")
+  ;; )
 
 ;;; Private:
 
