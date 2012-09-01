@@ -51,7 +51,8 @@
 ;; Notify function
 ;;;###autoload
 (defun milkode:jump (path)
-  (message path)
+  (interactive "MPath: ")
+  (message (shell-command-to-string (concat "gmilk " path)))
   )
 
 ;;; Private:
