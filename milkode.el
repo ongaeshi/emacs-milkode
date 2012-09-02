@@ -1,32 +1,42 @@
-;;; milkode.el --- Run the shell command asynchronously that you specified when you save the file. 
+;;; milkode.el --- Command line search and direct jump with Milkode
 
 ;; Copyright (C) 2012 ongaeshi
 
 ;; Author: ongaeshi
 ;; Keywords: milkode, search, keyword, tag, jump, direct
-;; Version: 0.1
+;; Version: 0.1.1
 ;; Package-Requires:
 
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
+;; Permission is hereby granted, free of charge, to any person obtaining
+;; a copy of this software and associated documentation files (the
+;; "Software"), to deal in the Software without restriction, including
+;; without limitation the rights to use, copy, modify, merge, publish,
+;; distribute, sublicense, and/or sell copies of the Software, and to
+;; permit persons to whom the Software is furnished to do so, subject to
+;; the following conditions:
 
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
+;; The above copyright notice and this permission notice shall be
+;; included in all copies or substantial portions of the Software.
 
-;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+;; EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+;; MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+;; NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+;; LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+;; OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+;; WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ;;; Commentary:
 
-;; Milkode (http://milkode.ongaeshi.me) support.
+;; Command line search and direct jump with Milkode.
+;; Milkode(http://milkode.ongaeshi.me) of the installation is required. 
 
 ;; Feature
-;;   1. Jump to direct-path(/path/to/dir:15)
-;;   2. Search keyword
+;;   1. Search (milkode:search). Jump to row C-cC-c.
+;;   2. When you search for direct pass ('/path/to/dir:15') jump directly to the specified row.
+;;   3. Move the cursor to direct pass on a text file, (milkode:search) can jump
+;;
+;; Displayed direct pass to click the line number in the 'milk web' (ex. http://kodeworld.ongaeshi.me/)
 
 ;; URL
 ;;   https://github.com/ongaeshi/emacs-milkode
@@ -35,10 +45,9 @@
 ;;   (auto-install-from-url "https://raw.github.com/ongaeshi/emacs-milkode/master/milkode.el")
 
 ;;; Initlial Setting:
-
-;; (require 'emacs-milkode)
+;; (require 'milkode)
 ;; 
-;; ;; Shortcut setting
+;; ;; Shortcut setting (Your favorite things)
 ;; (global-set-key (kbd "M-j") 'milkode:search)
 
 ;;; Code:
