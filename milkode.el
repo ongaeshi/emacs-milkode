@@ -39,7 +39,7 @@
 ;; (require 'emacs-milkode)
 ;; 
 ;; ;; Shortcut setting
-;; (global-set-key (kbd "C-x C-m") 'milkode:jump)    ; Jump to direct-path
+;; (global-set-key (kbd "M-j") 'milkode:search)
 
 ;;; Code:
 
@@ -49,26 +49,30 @@
 
 ;; Notify function
 ;;;###autoload
-(defun milkode:jump ()
+(defun milkode:search ()
   (interactive)
   (let ((at-point (thing-at-point 'filename)))
     (if (milkode:is-directpath at-point)
-        (milkode:jump-in at-point)
-      (milkode:jump-in (read-string "Input: ")))))
+        (milkode:jump at-point)
+      (let ((input (read-string "gmilk: ")))
+        (if (milkode:is-directpath input)
+            (milkode:jump input)
+          (milkode:grep input))))))
   
 ;;; Private:
 
-(defun milkode:is-directpath (str)
-  (string-match "^/.*:[0-9]+" str))
-
-(defun milkode:jump-in (path)
-  (with-output-to-string
-    (with-current-buffer
-        standard-output
+(defun milkode:jump (path)
+  (with-temp-buffer
       (call-process "gmilk" nil t nil path)
       (goto-char (point-min))
       (milkode:goto-line (thing-at-point 'filename))
-      )))
+      ))
+
+(defun milkode:grep (path)
+  (message (concat "gmilk " path)))
+
+(defun milkode:is-directpath (str)
+  (string-match "^/.*:[0-9]+" str))
 
 (defun milkode:goto-line (str)
   (let ((list (split-string str ":")))
