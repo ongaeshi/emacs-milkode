@@ -69,7 +69,7 @@
       ))
 
 (defun milkode:grep (path)
-  (message (concat "gmilk " path)))
+  (grep (concat "gmilk " path)))
 
 (defun milkode:is-directpath (str)
   (string-match "^/.*:[0-9]+" str))
