@@ -32,7 +32,7 @@
 ;;   https://github.com/ongaeshi/emacs-milkode
 
 ;;; Install:
-;;   (auto-install-from-url "https://raw.github.com/ongaeshi/emacs-milkode/master/emacs-milkode.el")
+;;   (auto-install-from-url "https://raw.github.com/ongaeshi/emacs-milkode/master/milkode.el")
 
 ;;; Initlial Setting:
 
