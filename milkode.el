@@ -47,18 +47,22 @@
 
 ;;; Public:
 
-;; Notify function
+(defvar milkode:history nil
+  "History of gmilk commands.")
+
 ;;;###autoload
 (defun milkode:search ()
   (interactive)
   (let ((at-point (thing-at-point 'filename)))
     (if (milkode:is-directpath at-point)
-        (milkode:jump at-point)
-      (let ((input (read-string "gmilk: ")))
+        (progn
+          (setq milkode:history (cons at-point milkode:history)) 
+          (milkode:jump at-point)) 
+      (let ((input (read-string "gmilk: " nil 'milkode:history)))
         (if (milkode:is-directpath input)
             (milkode:jump input)
           (milkode:grep input))))))
-  
+
 ;;; Private:
 
 (defun milkode:jump (path)
