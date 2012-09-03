@@ -75,7 +75,7 @@
         (progn
           (setq milkode:history (cons at-point milkode:history)) 
           (milkode:jump at-point)) 
-      (let ((input (read-string "gmilk: " nil 'milkode:history)))
+      (let ((input (read-string "gmilk: " (thing-at-point 'symbol) 'milkode:history)))
         (if (milkode:is-directpath input)
             (milkode:jump input)
           (milkode:grep input))))))
