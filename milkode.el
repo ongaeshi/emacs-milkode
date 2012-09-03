@@ -48,16 +48,24 @@
 ;; (require 'milkode)
 ;; 
 ;; ;; Shortcut setting (Your favorite things)
-;; (global-set-key (kbd "M-j") 'milkode:search)
+;; (global-set-key (kbd "M-g") 'milkode:search)
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
-
-;;; Public:
+;;; Variables:
+(setq milkode:cygwin-p (eq system-type 'cygwin)
+      milkode:nt-p (eq system-type 'windows-nt)
+      milkode:meadow-p (featurep 'meadow)
+      milkode:windows-p (or milkode:cygwin-p milkode:nt-p milkode:meadow-p)) ; Windows?
 
 (defvar milkode:history nil
   "History of gmilk commands.")
+
+(defvar gmilk-command
+  (if milkode:windows-p "gmilk.bat" "gmilk")
+  "gmilk command.")
+
+;;; Public:
 
 ;;;###autoload
 (defun milkode:search ()
@@ -76,22 +84,30 @@
 
 (defun milkode:jump (path)
   (with-temp-buffer
-      (call-process "gmilk" nil t nil path)
+      (call-process gmilk-command nil t nil path)
       (goto-char (point-min))
       (milkode:goto-line (thing-at-point 'filename))
       ))
 
 (defun milkode:grep (path)
-  (grep (concat "gmilk " path)))
+  (grep (concat gmilk-command " " path)))
 
 (defun milkode:is-directpath (str)
   (string-match "^/.*:[0-9]+" str))
 
+(defun milkode:is-windows-abs (str)
+  (string-match "^[a-zA-Z]:" str))
+
 (defun milkode:goto-line (str)
   (let ((list (split-string str ":")))
-    (find-file (nth 0 list))
-    (goto-line (string-to-number (nth 1 list)))
-  ))
+    (if (milkode:is-windows-abs str)
+        (progn 
+          (find-file (concat (nth 0 list) ":" (nth 1 list)))
+          (goto-line (string-to-number (nth 2 list))))
+      (find-file (nth 0 list))
+      (goto-line (string-to-number (nth 1 list))))))
+
+;; 
 
 (provide 'milkode)
 ;;; milkode.el ends here
