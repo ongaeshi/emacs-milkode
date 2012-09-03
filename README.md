@@ -27,10 +27,6 @@ MIT
 
 ## Install
 
-[MELPA](http://melpa.milkbox.net/) : milkode
-
-OR
-
 ```emacs-lisp
 (auto-install-from-url "https://raw.github.com/ongaeshi/emacs-milkode/master/milkode.el")
 ```
