@@ -3,8 +3,8 @@
 ;; Copyright (C) 2012 ongaeshi
 
 ;; Author: ongaeshi
-;; Keywords: milkode, search, keyword, tag, jump, direct
-;; Version: 0.1.1
+;; Keywords: milkode, search, grep, jump, keyword
+;; Version: 0.2
 ;; Package-Requires:
 
 ;; Permission is hereby granted, free of charge, to any person obtaining
@@ -32,7 +32,7 @@
 ;; Milkode(http://milkode.ongaeshi.me) of the installation is required. 
 
 ;; Feature
-;;   1. Search (milkode:search). Jump to row C-cC-c.
+;;   1. Search (milkode:search). Jump to row C-c C-c.
 ;;   2. When you search for direct pass ('/path/to/dir:15') jump directly to the specified row.
 ;;   3. Move the cursor to direct pass on a text file, (milkode:search) can jump
 ;;
