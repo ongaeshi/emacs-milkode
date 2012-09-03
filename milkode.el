@@ -3,8 +3,8 @@
 ;; Copyright (C) 2012 ongaeshi
 
 ;; Author: ongaeshi
-;; Keywords: milkode, search, keyword, tag, jump, direct
-;; Version: 0.1.1
+;; Keywords: milkode, search, grep, jump, keyword
+;; Version: 0.2
 ;; Package-Requires:
 
 ;; Permission is hereby granted, free of charge, to any person obtaining
@@ -32,7 +32,7 @@
 ;; Milkode(http://milkode.ongaeshi.me) of the installation is required. 
 
 ;; Feature
-;;   1. Search (milkode:search). Jump to row C-cC-c.
+;;   1. Search (milkode:search). Jump to row C-c C-c.
 ;;   2. When you search for direct pass ('/path/to/dir:15') jump directly to the specified row.
 ;;   3. Move the cursor to direct pass on a text file, (milkode:search) can jump
 ;;
@@ -48,16 +48,24 @@
 ;; (require 'milkode)
 ;; 
 ;; ;; Shortcut setting (Your favorite things)
-;; (global-set-key (kbd "M-j") 'milkode:search)
+;; (global-set-key (kbd "M-g") 'milkode:search)
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
-
-;;; Public:
+;;; Variables:
+(setq milkode:cygwin-p (eq system-type 'cygwin)
+      milkode:nt-p (eq system-type 'windows-nt)
+      milkode:meadow-p (featurep 'meadow)
+      milkode:windows-p (or milkode:cygwin-p milkode:nt-p milkode:meadow-p)) ; Windows?
 
 (defvar milkode:history nil
   "History of gmilk commands.")
+
+(defvar gmilk-command
+  (if milkode:windows-p "gmilk.bat" "gmilk")
+  "gmilk command.")
+
+;;; Public:
 
 ;;;###autoload
 (defun milkode:search ()
@@ -67,7 +75,7 @@
         (progn
           (setq milkode:history (cons at-point milkode:history)) 
           (milkode:jump at-point)) 
-      (let ((input (read-string "gmilk: " nil 'milkode:history)))
+      (let ((input (read-string "gmilk: " (thing-at-point 'symbol) 'milkode:history)))
         (if (milkode:is-directpath input)
             (milkode:jump input)
           (milkode:grep input))))))
@@ -76,22 +84,30 @@
 
 (defun milkode:jump (path)
   (with-temp-buffer
-      (call-process "gmilk" nil t nil path)
+      (call-process gmilk-command nil t nil path)
       (goto-char (point-min))
       (milkode:goto-line (thing-at-point 'filename))
       ))
 
 (defun milkode:grep (path)
-  (grep (concat "gmilk " path)))
+  (grep (concat gmilk-command " " path)))
 
 (defun milkode:is-directpath (str)
   (string-match "^/.*:[0-9]+" str))
 
+(defun milkode:is-windows-abs (str)
+  (string-match "^[a-zA-Z]:" str))
+
 (defun milkode:goto-line (str)
   (let ((list (split-string str ":")))
-    (find-file (nth 0 list))
-    (goto-line (string-to-number (nth 1 list)))
-  ))
+    (if (milkode:is-windows-abs str)
+        (progn 
+          (find-file (concat (nth 0 list) ":" (nth 1 list)))
+          (goto-line (string-to-number (nth 2 list))))
+      (find-file (nth 0 list))
+      (goto-line (string-to-number (nth 1 list))))))
+
+;; 
 
 (provide 'milkode)
 ;;; milkode.el ends here
