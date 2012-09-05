@@ -80,6 +80,14 @@
             (milkode:jump input)
           (milkode:grep input))))))
 
+;;;###autoload
+(defun milkode:display-history ()
+  (interactive)
+  (with-current-buffer (get-buffer-create "*milkode*")
+    (delete-region (point-min) (point-max))
+    (insert (mapconcat #'identity milkode:history "\n"))
+    (pop-to-buffer "*milkode*")))
+
 ;;; Private:
 
 (defun milkode:jump (path)
