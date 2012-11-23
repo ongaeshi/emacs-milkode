@@ -101,7 +101,8 @@
   (grep (concat gmilk-command " " path)))
 
 (defun milkode:is-directpath (str)
-  (string-match "^/.*:[0-9]+" str))
+  (unless (null str)
+    (string-match "^/.*:[0-9]+" str)))
 
 (defun milkode:is-windows-abs (str)
   (string-match "^[a-zA-Z]:" str))
