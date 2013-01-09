@@ -29,17 +29,14 @@
 ;;; Commentary:
 
 ;;; Install:
+;;   (auto-install-from-url "http://www.emacswiki.org/cgi-bin/wiki/download/anything-grep.el")
+;;   (auto-install-from-url "https://raw.github.com/ongaeshi/emacs-milkode/master/milkode.el")
 ;;   (auto-install-from-url "https://raw.github.com/ongaeshi/emacs-milkode/master/anything-milkode.el")
 
 ;;; Initlial Setting:
-;; (require 'anything-milkode)
-;;
-;; ;; Use anything-grep single line mode (optional)
-;; (setq anything-grep-multiline nil)
-;; ;; Shortcut setting (Your favorite things)
-;; (global-set-key (kbd "M-g") 'anything-milkode)
-;; ;; For popwin (optional, need '(require 'popwin)')
-;; (push '("*anything milkode*"     :height 20) popwin:special-display-config)
+;; (setq anything-grep-multiline nil)                                          ; Use anything-grep single line mode
+;; (global-set-key (kbd "M-g") 'anything-milkode)                              ; Shortcut setting
+;; (push '("*anything milkode*" :height 20) popwin:special-display-config)     ; For popwin
 
 ;;; Code:
 
