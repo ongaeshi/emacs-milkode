@@ -33,6 +33,13 @@
 
 ;;; Initlial Setting:
 ;; (require 'anything-milkode)
+;;
+;; ;; Use anything-grep single line mode (optional)
+;; (setq anything-grep-multiline nil)
+;; ;; Shortcut setting (Your favorite things)
+;; (global-set-key (kbd "M-g") 'anything-milkode)
+;; ;; For popwin (optional, need '(require 'popwin)')
+;; (push '("*anything milkode*"     :height 20) popwin:special-display-config)
 
 ;;; Code:
 
@@ -43,21 +50,14 @@
 (require 'milkode)
 
 ;;;###autoload
-(defun anything-milkode (command)
+(defun anything-milkode ()
   "TODO: comment"
-  (interactive
-   (progn
-     (grep-compute-defaults)
-     (let ((default (grep-default-command)))
-       (list (read-from-minibuffer "Run grep (like this): "
-				   (if current-prefix-arg
-				       default grep-command)
-				   nil nil 'grep-history
-				   (if current-prefix-arg nil default))
-             ))))
-  (anything-grep-base (list (agrep-source (agrep-preprocess-command command) default-directory))
-                      (format "*anything milkode*" command (abbreviate-file-name default-directory))))
-
+  (interactive)
+  (let* ((input   (read-string "gmilk: " (thing-at-point 'symbol) 'milkode:history))
+         (command (concat gmilk-command " " input))
+         (pwd     default-directory))
+    (anything-grep-base (list (agrep-source (agrep-preprocess-command command) pwd))
+                        (format "*anything milkode*" command (abbreviate-file-name pwd)))))
 ;; 
 
 (provide 'anything-milkode)
