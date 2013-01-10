@@ -34,6 +34,7 @@
 ;;   (auto-install-from-url "https://raw.github.com/ongaeshi/emacs-milkode/master/anything-milkode.el")
 
 ;;; Initlial Setting:
+;; (require 'anything-milkode)
 ;; (setq anything-grep-multiline nil)                                          ; Use anything-grep single line mode
 ;; (global-set-key (kbd "M-g") 'anything-milkode)                              ; Shortcut setting
 ;; (push '("*anything milkode*" :height 20) popwin:special-display-config)     ; For popwin
