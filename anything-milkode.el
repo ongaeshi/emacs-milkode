@@ -56,7 +56,7 @@
         (progn
           (setq milkode:history (cons at-point milkode:history)) 
           (milkode:jump at-point)) 
-      (let* ((input   (read-string "gmilk: " (thing-at-point 'symbol) 'milkode:history))
+      (let* ((input   (read-string "anything-milkode: " (thing-at-point 'symbol) 'milkode:history))
              (command (concat gmilk-command " " input))
              (pwd     default-directory))
         (anything-grep-base (list (agrep-source (agrep-preprocess-command command) pwd))
