@@ -61,6 +61,32 @@
              (pwd     default-directory))
         (anything-grep-base (list (agrep-source (agrep-preprocess-command command) pwd))
                             (format "*anything milkode*" command (abbreviate-file-name pwd)))))))
+
+(defun anything-c-sources-milkode-files (pwd)
+  (loop for elt in
+        '(("milk files (%s)" . ""))
+        collect
+        `((name . ,(format (car elt) pwd))
+          (init . (lambda ()
+                    (unless (and ,(string= (cdr elt) "") ;update candidate buffer every time except for that of all project files
+                                 (anything-candidate-buffer))
+                      (with-current-buffer
+                          (anything-candidate-buffer 'global)
+                        (insert
+                         (shell-command-to-string
+                          ,(format "milk files" ; for win
+                                   (cdr elt))))))))
+          (candidates-in-buffer)
+          (type . file))))
+
+;;;###autoload
+(defun anything-milkode-files ()
+  (interactive)
+  (let* ((pwd default-directory)
+         (sources (anything-c-sources-milkode-files pwd)))
+    (anything-other-buffer sources
+     (format "*anything milkode files*"))))
+
 ;; 
 
 (provide 'anything-milkode)
