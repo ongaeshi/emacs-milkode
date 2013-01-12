@@ -62,19 +62,19 @@
         (anything-grep-base (list (agrep-source (agrep-preprocess-command command) pwd))
                             (format "*anything milkode*" command (abbreviate-file-name pwd)))))))
 
+;;;###autoload
 (defun anything-c-sources-milkode-files (pwd)
   (loop for elt in
         '(("milk files (%s)" . ""))
         collect
         `((name . ,(format (car elt) pwd))
           (init . (lambda ()
-                    (unless (and ,(string= (cdr elt) "") ;update candidate buffer every time except for that of all project files
-                                 (anything-candidate-buffer))
+                    (unless (anything-candidate-buffer)
                       (with-current-buffer
                           (anything-candidate-buffer 'global)
                         (insert
                          (shell-command-to-string
-                          ,(format "milk files" ; for win
+                          ,(format "milk files -r" ; for win
                                    (cdr elt))))))))
           (candidates-in-buffer)
           (type . file))))
