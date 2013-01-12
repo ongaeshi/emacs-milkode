@@ -74,15 +74,21 @@
 ;;;###autoload
 (defun milkode:search ()
   (interactive)
+  (let ((input (read-string "gmilk: " (thing-at-point 'symbol) 'milkode:history)))
+    (milkode:grep input)))
+
+;;;###autoload
+(defun milkode:jump ()
+  (interactive)
   (let ((at-point (thing-at-point 'filename)))
     (if (milkode:is-directpath at-point)
         (progn
           (setq milkode:history (cons at-point milkode:history)) 
-          (milkode:jump at-point)) 
-      (let ((input (read-string "gmilk: " (thing-at-point 'symbol) 'milkode:history)))
+          (milkode:jump-directpath at-point)) 
+      (let ((input (read-string "milk jump: " (thing-at-point 'symbol) 'milkode:history)))
         (if (milkode:is-directpath input)
-            (milkode:jump input)
-          (milkode:grep input))))))
+            (milkode:jump-directpath input)
+          (message "Not direct path."))))))
 
 ;;;###autoload
 (defun milkode:display-history ()
@@ -94,12 +100,13 @@
 
 ;;; Private:
 
-(defun milkode:jump (path)
+(defun milkode:jump-directpath (path)
   (with-temp-buffer
-      (call-process gmilk-command nil t nil path)
-      (goto-char (point-min))
-      (milkode:goto-line (thing-at-point 'filename))
-      ))
+    (message (format "Jump to %s ..." path))
+    (call-process gmilk-command nil t nil path)
+    (goto-char (point-min))
+    (milkode:goto-line (thing-at-point 'filename))
+    ))
 
 (defun milkode:grep (path)
   (grep (concat gmilk-command " " path)))
