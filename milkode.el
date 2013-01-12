@@ -65,6 +65,10 @@
   (if milkode:windows-p "gmilk.bat" "gmilk")
   "gmilk command.")
 
+(defvar milk-command
+  (if milkode:windows-p "milk.bat" "milk")
+  "milk command.")
+
 ;;; Public:
 
 ;;;###autoload
