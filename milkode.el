@@ -98,6 +98,8 @@
 ;;; Private:
 
 (defun milkode:jump-directpath (path)
+  (if (featurep 'jump-to-line)
+      (jtl-push-stack (point-marker)))
   (with-temp-buffer
     (message (format "Jump to %s ..." path))
     (call-process gmilk-command nil t nil path)
