@@ -51,11 +51,18 @@
 (defun anything-milkode ()
   "TODO: comment"
   (interactive)
-  (let* ((input   (read-string "anything-milkode: " (thing-at-point 'symbol) 'milkode:history))
-             (command (concat gmilk-command " " input))
-             (pwd     default-directory))
-        (anything-grep-base (list (agrep-source (agrep-preprocess-command command) pwd))
-                            (format "*anything milkode*" command (abbreviate-file-name pwd)))))
+  (let ((at-point (thing-at-point 'filename)))
+    (if (milkode:is-directpath at-point)
+        (progn
+          (setq milkode:history (cons at-point milkode:history)) 
+          (milkode:jump-directpath at-point))
+      (let* ((input   (read-string "anything-milkode: " (thing-at-point 'symbol) 'milkode:history))
+         (command (concat gmilk-command " " input))
+         (pwd     default-directory))
+        (if (milkode:is-directpath input)
+            (milkode:jump-directpath input)
+          (anything-grep-base (list (agrep-source (agrep-preprocess-command command) pwd))
+                              (format "*anything milkode*" command (abbreviate-file-name pwd))))))))
 
 (defun anything-c-sources-milkode-files (pwd)
   (loop for elt in
