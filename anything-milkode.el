@@ -55,11 +55,14 @@
 (require 'milkode)
 
 ;;;###autoload
-(defun anything-milkode ()
-  "TODO: comment"
-  (interactive)
-  (let ((at-point (thing-at-point 'filename)))
-    (if (milkode:is-directpath at-point)
+(defun anything-milkode (n)
+  "milkode:search use `anything'."
+  (interactive "P")
+  (let ((at-point (thing-at-point 'filename))
+        (is-milkode:search (consp n)))
+    (if is-milkode:search
+        (milkode:search)
+      (if (milkode:is-directpath at-point)
         (progn
           (setq milkode:history (cons at-point milkode:history)) 
           (milkode:jump-directpath at-point))
@@ -69,7 +72,7 @@
         (if (milkode:is-directpath input)
             (milkode:jump-directpath input)
           (anything-grep-base (list (agrep-source (agrep-preprocess-command command) pwd))
-                              (format "*anything milkode*" command (abbreviate-file-name pwd))))))))
+                              (format "*anything milkode*" command (abbreviate-file-name pwd)))))))))
 
 (defun anything-c-sources-milkode-files (pwd)
   (loop for elt in
