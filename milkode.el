@@ -49,6 +49,9 @@
 ;; 
 ;; ;; Shortcut setting (Your favorite things)
 ;; (global-set-key (kbd "M-g") 'milkode:search)
+;;
+;; ;; popwin setting (Optional)
+;; (push '("*grep*" :noselect t) popwin:special-display-config)
 
 ;;; Code:
 

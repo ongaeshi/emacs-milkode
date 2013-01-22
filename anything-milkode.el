@@ -35,9 +35,16 @@
 
 ;;; Initlial Setting:
 ;; (require 'anything-milkode)
-;; (setq anything-grep-multiline nil)                                          ; Use anything-grep single line mode
-;; (global-set-key (kbd "M-g") 'anything-milkode)                              ; Shortcut setting
-;; (push '("*anything milkode*" :height 20) popwin:special-display-config)     ; For popwin
+;;
+;; ;; Use anything-grep single line mode
+;; (setq anything-grep-multiline nil)                
+;; 
+;; ;; Shortcut setting
+;; (global-set-key (kbd "M-g") 'anything-milkode)
+;;
+;; ;; popwin setting (Optional)
+;; (push '("*grep*" :noselect t) popwin:special-display-config)
+;; (push '("*anything milkode*") popwin:special-display-config)
 
 ;;; Code:
 
