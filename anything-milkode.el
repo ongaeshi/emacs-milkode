@@ -74,13 +74,14 @@
           (anything-grep-base (list (agrep-source (agrep-preprocess-command command) pwd))
                               (format "*anything milkode*" command (abbreviate-file-name pwd)))))))))
 
-(defun anything-c-sources-milkode-files (pwd)
+(defun anything-c-sources-milkode-files (pwd is-rebuild)
   (loop for elt in
         '(("milk files (%s)" . ""))
         collect
         `((name . ,(format (car elt) pwd))
           (init . (lambda ()
-                    (unless (anything-candidate-buffer)
+                    (when (or (not (anything-candidate-buffer))
+                              ,is-rebuild)
                       (with-current-buffer
                           (anything-candidate-buffer 'global)
                         (insert
@@ -90,7 +91,7 @@
           (candidates-in-buffer)
           (type . file))))
 
-(setq anything-c-source-milkode-packages
+(defvar anything-c-source-milkode-packages
   '((name . "Milkode Packages")
     (init . (lambda ()
               (unless (anything-candidate-buffer)
@@ -102,11 +103,12 @@
     (real-to-display . (lambda (c) (file-name-nondirectory c)))))
 
 ;;;###autoload
-(defun anything-milkode-files ()
-  (interactive)
+(defun anything-milkode-files (n)
+  (interactive "P")
   (let* ((pwd default-directory)
+         (is-rebuild (consp n))
          (sources
-          (list (car (anything-c-sources-milkode-files pwd))
+          (list (car (anything-c-sources-milkode-files pwd is-rebuild))
                 anything-c-source-milkode-packages)))
     (anything-other-buffer sources
                            (format "*anything milkode files*"))))
