@@ -90,11 +90,24 @@
           (candidates-in-buffer)
           (type . file))))
 
+(setq anything-c-source-milkode-packages
+  '((name . "Milkode Packages")
+    (init . (lambda ()
+              (unless (anything-candidate-buffer)
+                (with-current-buffer
+                  (anything-candidate-buffer 'global)
+                (insert (shell-command-to-string (format "%s list -d" milk-command)))))))
+    (candidates-in-buffer)
+    (type . file)
+    (real-to-display . (lambda (c) (file-name-nondirectory c)))))
+
 ;;;###autoload
 (defun anything-milkode-files ()
   (interactive)
   (let* ((pwd default-directory)
-         (sources (anything-c-sources-milkode-files pwd)))
+         (sources
+          (list (car (anything-c-sources-milkode-files pwd))
+                anything-c-source-milkode-packages)))
     (anything-other-buffer sources
                            (format "*anything milkode files*"))))
 
