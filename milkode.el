@@ -98,6 +98,23 @@
     (insert (mapconcat #'identity milkode:history "\n"))
     (pop-to-buffer "*milkode*")))
 
+;;;###autoload
+(defun milkode:add (directory)
+  (interactive "Dmilk add: ")
+  (with-current-buffer (get-buffer-create "*milkode*")
+      (delete-region (point-min) (point-max))
+      (insert (shell-command-to-string (format "%s add %s" milk-command directory)))
+      (pop-to-buffer "*milkode*")))
+
+;;;###autoload
+(defun milkode:update (directory)
+  (interactive "Dmilk update: ")
+  (with-current-buffer (get-buffer-create "*milkode*")
+      (setq default-directory directory)
+      (delete-region (point-min) (point-max))
+      (insert (shell-command-to-string (format "%s update" milk-command)))
+      (pop-to-buffer "*milkode*")))
+
 ;;; Private:
 
 (defun milkode:jump-directpath (path)
