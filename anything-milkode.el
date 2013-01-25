@@ -110,6 +110,8 @@
          (sources
           (list (car (anything-c-sources-milkode-files pwd is-rebuild))
                 anything-c-source-milkode-packages)))
+    (when is-rebuild
+      (kill-buffer " *anything candidates:Milkode Packages*"))
     (anything-other-buffer sources
                            (format "*anything milkode files*"))))
 
