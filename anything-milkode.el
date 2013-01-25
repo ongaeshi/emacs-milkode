@@ -72,7 +72,7 @@
         (if (milkode:is-directpath input)
             (milkode:jump-directpath input)
           (anything-grep-base (list (agrep-source (agrep-preprocess-command command) pwd))
-                              (format "*anything milkode*" command (abbreviate-file-name pwd)))))))))
+                              "*anything milkode*")))))))
 
 (defun anything-c-sources-milkode-files (pwd is-rebuild)
   (loop for elt in
