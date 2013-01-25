@@ -4,7 +4,7 @@
 
 ;; Author: ongaeshi
 ;; Keywords: milkode, search, grep, jump, keyword
-;; Version: 0.2
+;; Version: 0.3
 ;; Package-Requires:
 
 ;; Permission is hereby granted, free of charge, to any person obtaining
@@ -49,6 +49,9 @@
 ;; 
 ;; ;; Shortcut setting (Your favorite things)
 ;; (global-set-key (kbd "M-g") 'milkode:search)
+;;
+;; ;; popwin setting (Optional)
+;; (push '("*grep*" :noselect t) popwin:special-display-config)
 
 ;;; Code:
 
@@ -61,9 +64,16 @@
 (defvar milkode:history nil
   "History of gmilk commands.")
 
+(defface milkode:highlight-line-face '((t (:background "#66ccff" :underline t)))
+  "Face for jump highlight." :group 'jump-to-line)
+
 (defvar gmilk-command
   (if milkode:windows-p "gmilk.bat" "gmilk")
   "gmilk command.")
+
+(defvar milk-command
+  (if milkode:windows-p "milk.bat" "milk")
+  "milk command.")
 
 ;;; Public:
 
@@ -74,10 +84,10 @@
     (if (milkode:is-directpath at-point)
         (progn
           (setq milkode:history (cons at-point milkode:history)) 
-          (milkode:jump at-point)) 
+          (milkode:jump-directpath at-point)) 
       (let ((input (read-string "gmilk: " (thing-at-point 'symbol) 'milkode:history)))
         (if (milkode:is-directpath input)
-            (milkode:jump input)
+            (milkode:jump-directpath input)
           (milkode:grep input))))))
 
 ;;;###autoload
@@ -88,14 +98,34 @@
     (insert (mapconcat #'identity milkode:history "\n"))
     (pop-to-buffer "*milkode*")))
 
+;;;###autoload
+(defun milkode:add (directory)
+  (interactive "Dmilk add: ")
+  (with-current-buffer (get-buffer-create "*milkode*")
+      (delete-region (point-min) (point-max))
+      (insert (shell-command-to-string (format "%s add %s" milk-command directory)))
+      (pop-to-buffer "*milkode*")))
+
+;;;###autoload
+(defun milkode:update (directory)
+  (interactive "Dmilk update: ")
+  (with-current-buffer (get-buffer-create "*milkode*")
+      (setq default-directory directory)
+      (delete-region (point-min) (point-max))
+      (insert (shell-command-to-string (format "%s update" milk-command)))
+      (pop-to-buffer "*milkode*")))
+
 ;;; Private:
 
-(defun milkode:jump (path)
+(defun milkode:jump-directpath (path)
+  (if (featurep 'jump-to-line)
+      (jtl-push-stack (point-marker)))
   (with-temp-buffer
-      (call-process gmilk-command nil t nil path)
-      (goto-char (point-min))
-      (milkode:goto-line (thing-at-point 'filename))
-      ))
+    (message (format "Jump to %s ..." path))
+    (call-process gmilk-command nil t nil path)
+    (goto-char (point-min))
+    (milkode:goto-line (thing-at-point 'filename))
+    (milkode:highlight-line 0.6)))
 
 (defun milkode:grep (path)
   (grep (concat gmilk-command " " path)))
@@ -115,6 +145,25 @@
           (goto-line (string-to-number (nth 2 list))))
       (find-file (nth 0 list))
       (goto-line (string-to-number (nth 1 list))))))
+
+(defun milkode:highlight-line (seconds)
+  (milkode:highlight-line-start)
+  (sit-for seconds)
+  (milkode:highlight-line-end))
+
+(defvar milkode:match-line-overlay nil)
+
+(defun milkode:highlight-line-start ()
+  (let ((args (list (line-beginning-position) (1+ (line-end-position)) nil)))
+    (if (not milkode:match-line-overlay)
+        (setq milkode:match-line-overlay (apply 'make-overlay args))
+      (apply 'move-overlay milkode:match-line-overlay args))
+    (overlay-put milkode:match-line-overlay 'face 'milkode:highlight-line-face)))
+
+(defun milkode:highlight-line-end ()
+  (when milkode:match-line-overlay
+    (delete-overlay milkode:match-line-overlay)
+    (setq milkode:match-line-overlay nil)))
 
 ;; 
 
