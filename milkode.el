@@ -4,7 +4,7 @@
 
 ;; Author: ongaeshi
 ;; Keywords: milkode, search, grep, jump, keyword
-;; Version: 0.2
+;; Version: 0.3
 ;; Package-Requires:
 
 ;; Permission is hereby granted, free of charge, to any person obtaining

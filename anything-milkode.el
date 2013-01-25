@@ -4,7 +4,7 @@
 
 ;; Author: ongaeshi
 ;; Keywords: milkode, anything, search, grep, jump, keyword
-;; Version: 0.1
+;; Version: 0.3
 ;; Package-Requires:
 
 ;; Permission is hereby granted, free of charge, to any person obtaining
@@ -41,10 +41,12 @@
 ;; 
 ;; ;; Shortcut setting
 ;; (global-set-key (kbd "M-g") 'anything-milkode)
+;; (global-set-key (kbd "C-x a f") 'anything-milkode-files)
 ;;
 ;; ;; popwin setting (Optional)
-;; (push '("*grep*" :noselect t) popwin:special-display-config)
-;; (push '("*anything milkode*") popwin:special-display-config)
+;; (push '("*grep*" :noselect t)       popwin:special-display-config)
+;; (push '("*anything milkode*")       popwin:special-display-config)
+;; (push '("*anything milkode files*") popwin:special-display-config)
 
 ;;; Code:
 
