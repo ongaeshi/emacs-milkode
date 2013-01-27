@@ -58,7 +58,8 @@
 
 ;;;###autoload
 (defun anything-milkode (n)
-  "milkode:search use `anything'."
+  "Milkode search using `anything-grep`.
+With C-u `milkode:search`"
   (interactive "P")
   (let ((at-point (thing-at-point 'filename))
         (is-milkode:search (consp n)))
@@ -106,6 +107,8 @@
 
 ;;;###autoload
 (defun anything-milkode-files (n)
+  "Jump to registered files and package directories with `anything`.
+With C-u clear cache."
   (interactive "P")
   (let* ((pwd default-directory)
          (is-rebuild (consp n))

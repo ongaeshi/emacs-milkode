@@ -79,6 +79,7 @@
 
 ;;;###autoload
 (defun milkode:search ()
+  "Milkode search using `M-x grep`"
   (interactive)
   (let ((at-point (thing-at-point 'filename)))
     (if (milkode:is-directpath at-point)
@@ -92,6 +93,7 @@
 
 ;;;###autoload
 (defun milkode:display-history ()
+  "Dispaly search history"
   (interactive)
   (with-current-buffer (get-buffer-create "*milkode*")
     (delete-region (point-min) (point-max))
@@ -100,6 +102,7 @@
 
 ;;;###autoload
 (defun milkode:add (directory)
+  "Execute `milk add`"
   (interactive "Dmilk add: ")
   (with-current-buffer (get-buffer-create "*milkode*")
       (delete-region (point-min) (point-max))
@@ -108,6 +111,7 @@
 
 ;;;###autoload
 (defun milkode:update (directory)
+  "Execute `milk update`"
   (interactive "Dmilk update: ")
   (with-current-buffer (get-buffer-create "*milkode*")
       (setq default-directory directory)
