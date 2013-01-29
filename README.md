@@ -6,8 +6,9 @@ Overview
 
 Support [Milkode](http://milkode.ongaeshi.me/wiki/Main_Page) search for Emacs.
 
-milkode.el Use `M-x grep`.
-anything-milkode.el Use `anything`. (Contain milkode.el)
+**milkode.el** use `M-x grep`.
+
+**anything-milkode.el** use `anything`. (Contain milkode.el)
 
 Screenshots
 ------------
