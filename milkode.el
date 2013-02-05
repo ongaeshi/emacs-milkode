@@ -55,11 +55,15 @@
 
 ;;; Code:
 
+(declare-function jtl-push-stack "jump-to-line")
+
 ;;; Variables:
-(setq milkode:cygwin-p (eq system-type 'cygwin)
-      milkode:nt-p (eq system-type 'windows-nt)
-      milkode:meadow-p (featurep 'meadow)
-      milkode:windows-p (or milkode:cygwin-p milkode:nt-p milkode:meadow-p)) ; Windows?
+(defvar milkode:windows-p
+  (let ((cygwin-p (eq system-type 'cygwin))
+        (nt-p (eq system-type 'windows-nt))
+        (meadow-p (featurep 'meadow)))
+    (or cygwin-p nt-p meadow-p))
+  "Flag that system is Window")
 
 (defvar milkode:history nil
   "History of gmilk commands.")
@@ -96,7 +100,7 @@
   "Dispaly search history"
   (interactive)
   (with-current-buffer (get-buffer-create "*milkode*")
-    (delete-region (point-min) (point-max))
+    (erase-buffer)
     (insert (mapconcat #'identity milkode:history "\n"))
     (pop-to-buffer "*milkode*")))
 
@@ -105,22 +109,21 @@
   "Execute `milk add`"
   (interactive "Dmilk add: ")
   (with-current-buffer (get-buffer-create "*milkode*")
-      (delete-region (point-min) (point-max))
-      (insert (shell-command-to-string (format "%s add %s" milk-command directory)))
-      (pop-to-buffer "*milkode*")))
+    (erase-buffer)
+    (insert (shell-command-to-string (format "%s add %s" milk-command directory)))
+    (pop-to-buffer "*milkode*")))
 
 ;;;###autoload
 (defun milkode:update (directory)
   "Execute `milk update`"
   (interactive "Dmilk update: ")
   (with-current-buffer (get-buffer-create "*milkode*")
-      (setq default-directory directory)
-      (delete-region (point-min) (point-max))
-      (insert (shell-command-to-string (format "%s update" milk-command)))
-      (pop-to-buffer "*milkode*")))
+    (setq default-directory directory)
+    (erase-buffer)
+    (insert (shell-command-to-string (format "%s update" milk-command)))
+    (pop-to-buffer "*milkode*")))
 
 ;;; Private:
-
 (defun milkode:jump-directpath (path)
   (if (featurep 'jump-to-line)
       (jtl-push-stack (point-marker)))
@@ -142,13 +145,15 @@
   (string-match "^[a-zA-Z]:" str))
 
 (defun milkode:goto-line (str)
-  (let ((list (split-string str ":")))
+  (let ((list (split-string str ":"))
+        file line)
     (if (milkode:is-windows-abs str)
-        (progn 
-          (find-file (concat (nth 0 list) ":" (nth 1 list)))
-          (goto-line (string-to-number (nth 2 list))))
-      (find-file (nth 0 list))
-      (goto-line (string-to-number (nth 1 list))))))
+        (setq file (concat (nth 0 list) ":" (nth 1 list))
+              line (string-to-number (nth 2 list)))
+      (setq file (nth 0 list) line (string-to-number (nth 1 list))))
+    (find-file file)
+    (goto-char (point-min))
+    (forward-line (1- line))))
 
 (defun milkode:highlight-line (seconds)
   (milkode:highlight-line-start)
