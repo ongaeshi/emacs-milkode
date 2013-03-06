@@ -125,7 +125,7 @@
 
 (when (featurep 'moz)
 ;;;###autoload
-(defun milkode:jump-from-firefox ()
+(defun milkode:jump-from-browser ()
   (interactive)
   (let* ((url (milkode:moz-get-url))
          (directpath (milkode:url-to-directpath url)))
