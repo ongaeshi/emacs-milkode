@@ -123,6 +123,54 @@
     (insert (shell-command-to-string (format "%s update" milk-command)))
     (pop-to-buffer "*milkode*")))
 
+(when (featurep 'moz)
+;;;###autoload
+(defun milkode:jump-from-firefox ()
+  (interactive)
+  (let* ((url (milkode:moz-get-url))
+         (directpath (milkode:url-to-directpath url)))
+    (if directpath
+        (milkode:jump-directpath directpath)
+      (message (format "Invalid milkode(milk web) url: %s" url)))))
+
+;; Private
+(defun milkode:url-to-directpath-lineno (src)
+  (if (string-match "#n\\([0-9]+\\)" src)
+      (substring src (match-beginning 1) (match-end 1))
+    1))
+
+(defun milkode:url-to-directpath-path (src)
+  (if (string-match "\\(.*\\)\\?.*" src)
+      (substring src (match-beginning 1) (match-end 1))
+    (if (string-match "\\(.*\\)#n[0-9]+" src)
+        (substring src (match-beginning 1) (match-end 1))
+      src)))
+
+(defun milkode:url-to-directpath (url)
+  (if (string-match "/home/\\(.*\\)" url)
+      (let* ((match1 (substring url (match-beginning 1) (match-end 1)))
+             (path   (milkode:url-to-directpath-path match1))
+             (lineno (milkode:url-to-directpath-lineno match1)))
+        (format "/%s:%s" path lineno))))
+
+(defun milkode:moz-get-url ()
+  (let ((moz-proc (inferior-moz-process)))
+    ;; Send message to moz.el
+    (comint-send-string moz-proc "repl._workContext.content.location.href")
+    (sleep-for 0 100)
+    ;; Extract URL from *MozRepl* buffer
+    (save-excursion
+      (set-buffer (process-buffer moz-proc))
+      (goto-char (point-max))
+      (previous-line)
+      (setq url (buffer-substring-no-properties
+                 (+ (point-at-bol) (length moz-repl-name) 3)
+                 (- (point-at-eol) 1))))
+    ;; Return result
+    (message "%s" url)
+    url))
+)
+
 ;;; Private:
 (defun milkode:jump-directpath (path)
   (if (featurep 'jump-to-line)
