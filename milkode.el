@@ -159,10 +159,9 @@
     (comint-send-string moz-proc "repl._workContext.content.location.href")
     (sleep-for 0 100)
     ;; Extract URL from *MozRepl* buffer
-    (save-excursion
-      (set-buffer (process-buffer moz-proc))
+    (with-current-buffer (process-buffer moz-proc)
       (goto-char (point-max))
-      (previous-line)
+      (line-move -1)
       (setq url (buffer-substring-no-properties
                  (+ (point-at-bol) (length moz-repl-name) 3)
                  (- (point-at-eol) 1))))
