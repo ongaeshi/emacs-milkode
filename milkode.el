@@ -158,16 +158,16 @@
     ;; Send message to moz.el
     (comint-send-string moz-proc "repl._workContext.content.location.href")
     (sleep-for 0 100)
-    ;; Extract URL from *MozRepl* buffer
     (with-current-buffer (process-buffer moz-proc)
+      ;; Extract URL from *MozRepl* buffer
       (goto-char (point-max))
       (line-move -1)
-      (setq url (buffer-substring-no-properties
+      (let ((url (buffer-substring-no-properties
                  (+ (point-at-bol) (length moz-repl-name) 3)
                  (- (point-at-eol) 1))))
-    ;; Return result
-    (message "%s" url)
-    url))
+        ;; Return result
+        (message "%s" url)
+        url))))
 )
 
 ;;; Private:
