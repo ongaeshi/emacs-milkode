@@ -29,7 +29,7 @@
 ;;; Commentary:
 
 ;; Command line search and direct jump with Milkode.
-;; Milkode(http://milkode.ongaeshi.me) of the installation is required. 
+;; Milkode(http://milkode.ongaeshi.me) of the installation is required.
 
 ;; Feature
 ;;   1. Search (milkode:search). Jump to row C-c C-c.
@@ -46,7 +46,7 @@
 
 ;;; Initlial Setting:
 ;; (require 'milkode)
-;; 
+;;
 ;; ;; Shortcut setting (Your favorite things)
 ;; (global-set-key (kbd "M-g") 'milkode:search)
 ;;
@@ -88,8 +88,8 @@
   (let ((at-point (thing-at-point 'filename)))
     (if (milkode:is-directpath at-point)
         (progn
-          (setq milkode:history (cons at-point milkode:history)) 
-          (milkode:jump-directpath at-point)) 
+          (setq milkode:history (cons at-point milkode:history))
+          (milkode:jump-directpath at-point))
       (let ((input (read-string "gmilk: " (thing-at-point 'symbol) 'milkode:history)))
         (if (milkode:is-directpath input)
             (milkode:jump-directpath input)
@@ -221,7 +221,7 @@
     (delete-overlay milkode:match-line-overlay)
     (setq milkode:match-line-overlay nil)))
 
-;; 
+;;
 
 (provide 'milkode)
 ;;; milkode.el ends here
