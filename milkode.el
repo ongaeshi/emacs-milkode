@@ -29,7 +29,7 @@
 ;;; Commentary:
 
 ;; Command line search and direct jump with Milkode.
-;; Milkode(http://milkode.ongaeshi.me) of the installation is required. 
+;; Milkode(http://milkode.ongaeshi.me) of the installation is required.
 
 ;; Feature
 ;;   1. Search (milkode:search). Jump to row C-c C-c.
@@ -46,7 +46,7 @@
 
 ;;; Initlial Setting:
 ;; (require 'milkode)
-;; 
+;;
 ;; ;; Shortcut setting (Your favorite things)
 ;; (global-set-key (kbd "M-g") 'milkode:search)
 ;;
@@ -88,12 +88,18 @@
   (let ((at-point (thing-at-point 'filename)))
     (if (milkode:is-directpath at-point)
         (progn
-          (setq milkode:history (cons at-point milkode:history)) 
-          (milkode:jump-directpath at-point)) 
+          (setq milkode:history (cons at-point milkode:history))
+          (milkode:jump-directpath at-point))
       (let ((input (read-string "gmilk: " (thing-at-point 'symbol) 'milkode:history)))
         (if (milkode:is-directpath input)
             (milkode:jump-directpath input)
           (milkode:grep input))))))
+
+(defun milkode:search-from-all-packages ()
+  "Milkode search all registered packages using `M-x grep`"
+  (interactive)
+  (let ((gmilk-command-option "-a"))
+    (milkode:search)))
 
 ;;;###autoload
 (defun milkode:display-history ()
@@ -181,8 +187,13 @@
     (milkode:goto-line (thing-at-point 'filename))
     (milkode:highlight-line 0.6)))
 
+(defun milkode:command (path)
+  (if (boundp 'gmilk-command-option)
+      (concat gmilk-command " " gmilk-command-option " " path)
+    (concat gmilk-command " " path)))
+
 (defun milkode:grep (path)
-  (grep (concat gmilk-command " " path)))
+  (grep (milkode:command path)))
 
 (defun milkode:is-directpath (str)
   (unless (null str)
@@ -221,7 +232,7 @@
     (delete-overlay milkode:match-line-overlay)
     (setq milkode:match-line-overlay nil)))
 
-;; 
+;;
 
 (provide 'milkode)
 ;;; milkode.el ends here
