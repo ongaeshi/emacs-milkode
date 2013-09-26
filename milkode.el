@@ -182,7 +182,9 @@
     (milkode:highlight-line 0.6)))
 
 (defun milkode:command (path)
-  (concat gmilk-command " " path))
+  (if (boundp 'gmilk-command-option)
+      (concat gmilk-command " " gmilk-command-option " " path)
+    (concat gmilk-command " " path)))
 
 (defun milkode:grep (path)
   (grep (milkode:command path)))
