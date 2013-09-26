@@ -181,8 +181,11 @@
     (milkode:goto-line (thing-at-point 'filename))
     (milkode:highlight-line 0.6)))
 
+(defun milkode:command (path)
+  (concat gmilk-command " " path))
+
 (defun milkode:grep (path)
-  (grep (concat gmilk-command " " path)))
+  (grep (milkode:command path)))
 
 (defun milkode:is-directpath (str)
   (unless (null str)
