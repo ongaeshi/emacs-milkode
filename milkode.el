@@ -95,6 +95,12 @@
             (milkode:jump-directpath input)
           (milkode:grep input))))))
 
+(defun milkode:search-from-all-packages ()
+  "Milkode search all registered packages using `M-x grep`"
+  (interactive)
+  (let ((gmilk-command-option "-a"))
+    (milkode:search)))
+
 ;;;###autoload
 (defun milkode:display-history ()
   "Dispaly search history"
