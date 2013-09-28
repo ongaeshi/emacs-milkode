@@ -65,12 +65,13 @@ Feature
 
 ### milkode
 
-Command                     | Description
---------------------------- | -------------------------------------
-M-x milkode:search          | Milkode search using `M-x grep`
-M-x milkode:display-history | Dispaly search history
-M-x milkode:add             | Execute `milk add`
-M-x milkode:update          | Execute `milk update`
+Command                              | Description
+------------------------------------ | -------------------------------------
+M-x milkode:search                   | Milkode search using `M-x grep`
+M-x milkode:search-from-all-packages | Milkode search all registered packages using `M-x grep`
+M-x milkode:display-history          | Dispaly search history
+M-x milkode:add                      | Execute `milk add`
+M-x milkode:update                   | Execute `milk update`
 
 ### anything-milkode
 
