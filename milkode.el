@@ -96,10 +96,11 @@
           (milkode:grep input))))))
 
 ;;;###autoload
-(defun milkode:search-at-point ()
-  "Milkode search at point"
-  (interactive)
-  (let ((at-point (thing-at-point 'filename)))
+(defun milkode:search-at-point (n)
+  "Milkode search current package at point text. If the prefix was C-u, search all registered packages"
+  (interactive "P")
+  (let ((at-point (thing-at-point 'filename))
+        (is-all-search (consp n)))
     (if (milkode:is-directpath at-point)
         (progn
           (setq milkode:history (cons at-point milkode:history))
@@ -107,7 +108,10 @@
       (let ((input (thing-at-point 'symbol)))
         (if (milkode:is-directpath input)
             (milkode:jump-directpath input)
-          (milkode:grep input))))))
+          (if is-all-search
+              (let ((gmilk-command-option "-a"))
+                (milkode:grep input))
+            (milkode:grep input)))))))
 
 ;;;###autoload
 (defun milkode:search-from-all-packages ()
