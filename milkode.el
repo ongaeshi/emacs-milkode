@@ -95,6 +95,7 @@
             (milkode:jump-directpath input)
           (milkode:grep input))))))
 
+;;;###autoload
 (defun milkode:search-from-all-packages ()
   "Milkode search all registered packages using `M-x grep`"
   (interactive)
