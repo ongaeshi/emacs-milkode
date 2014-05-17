@@ -96,6 +96,20 @@
           (milkode:grep input))))))
 
 ;;;###autoload
+(defun milkode:search-at-point ()
+  "Milkode search at point"
+  (interactive)
+  (let ((at-point (thing-at-point 'filename)))
+    (if (milkode:is-directpath at-point)
+        (progn
+          (setq milkode:history (cons at-point milkode:history))
+          (milkode:jump-directpath at-point))
+      (let ((input (thing-at-point 'symbol)))
+        (if (milkode:is-directpath input)
+            (milkode:jump-directpath input)
+          (milkode:grep input))))))
+
+;;;###autoload
 (defun milkode:search-from-all-packages ()
   "Milkode search all registered packages using `M-x grep`"
   (interactive)
