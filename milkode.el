@@ -83,7 +83,7 @@
 
 ;;;###autoload
 (defun milkode:search ()
-  "Milkode search using `M-x grep`"
+  "Milkode search current package using `M-x grep`"
   (interactive)
   (let ((at-point (thing-at-point 'filename)))
     (if (milkode:is-directpath at-point)
