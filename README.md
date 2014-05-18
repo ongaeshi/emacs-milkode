@@ -32,6 +32,7 @@ Setting.
 (require 'milkode)
 ;; Shortcut setting (Your favorite things)
 (global-set-key (kbd "M-g") 'milkode:search)
+(global-set-key (kbd "M-s") 'milkode:search-at-point)
 ```
 
 Feature
@@ -43,6 +44,8 @@ Command                              | Description
 ------------------------------------ | -------------------------------------
 M-x milkode:search                   | Milkode search using `M-x grep`
 M-x milkode:search-from-all-packages | Milkode search all registered packages using `M-x grep`
+M-x milkode:search-at-point          | Milkode search current package at point text
+With C-u                             | Search all registered packages
 M-x milkode:display-history          | Dispaly search history
 M-x milkode:add                      | Execute `milk add`
 M-x milkode:update                   | Execute `milk update`
