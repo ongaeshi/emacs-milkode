@@ -13,7 +13,7 @@ If you want to search with anything, Use [anything-milkode](https://github.com/o
 Screenshot
 ------------
 
-![emacs-milkode]()
+![emacs-milkode](./images/emacs-milkode-01.png)
 
 Install
 ------------
