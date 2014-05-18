@@ -20,6 +20,12 @@ Install
 
 ### milkode
 
+You can install emacs-milkode.el from MELPA with package.el
+
+```
+M-x package-install milkode
+```
+
 If you use `auto-install`.
 
 ```emacs-lisp:install.el
