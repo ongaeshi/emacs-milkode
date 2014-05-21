@@ -20,7 +20,7 @@ Install
 
 ### milkode
 
-You can install emacs-milkode.el from MELPA with package.el
+You can install from MELPA with package.el.
 
 ```
 M-x package-install milkode
