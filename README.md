@@ -28,17 +28,27 @@ M-x package-install milkode
 
 If you use `auto-install`.
 
-```emacs-lisp:install.el
+```
 (auto-install-from-url "https://raw.github.com/ongaeshi/emacs-milkode/master/milkode.el")
 ```
 
-Setting.
+Setting of `~/.emacs.d/init.el`.
 
-```emacs-lisp:~/.emacs.d/init.el
+```
 (require 'milkode)
 ;; Shortcut setting (Your favorite things)
 (global-set-key (kbd "M-g") 'milkode:search)
 (global-set-key (kbd "M-s") 'milkode:search-at-point)
+```
+
+#### Use Gomilk
+
+[Gomilk](https://github.com/ongaeshi/gomilk) is faster version written by Go.
+
+If you want to use the Gomilk, Add to `init.el` the following setting.
+
+```
+(setq gmilk-command "gomilk --nogroup --nocolor --smart-case")
 ```
 
 Feature
