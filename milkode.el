@@ -4,7 +4,7 @@
 
 ;; Author: ongaeshi
 ;; Keywords: milkode, search, grep, jump, keyword
-;; Version: 0.3
+;; Version: 0.4
 ;; Package-Requires:
 
 ;; Permission is hereby granted, free of charge, to any person obtaining
@@ -74,6 +74,10 @@
 (defvar gmilk-command
   (if milkode:windows-p "gmilk.bat" "gmilk")
   "gmilk command.")
+
+(defvar jump-from-browser-command
+  (if milkode:windows-p "gmilk.bat" "gmilk")
+  "M-x jump-from-browser-command.")
 
 (defvar milk-command
   (if milkode:windows-p "milk.bat" "milk")
@@ -201,7 +205,7 @@
       (jtl-push-stack (point-marker)))
   (with-temp-buffer
     (message (format "Jump to %s ..." path))
-    (call-process gmilk-command nil t nil path)
+    (call-process jump-from-browser-command nil t nil path)
     (goto-char (point-min))
     (milkode:goto-line (thing-at-point 'filename))
     (milkode:highlight-line 0.6)))
